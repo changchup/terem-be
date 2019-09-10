@@ -30,6 +30,7 @@ module.exports = class WeatherData {
       // do not process header
       if (this.lineNo === 1) return
 
+
       // put line in a line object and process by line
       const splitLine = csvLine.split(',');
 
@@ -44,7 +45,11 @@ module.exports = class WeatherData {
     // end of processing file
     lineReader.on('close', () => {
 
-      console.log(JSON.stringify({ WeatherData: this.year.getFormattedObject(this.months) }));
+      // push any remaining year and month data
+      this.data.push(this.year.getFormattedObject(this.months));
+      //this.data.push(this.months);
+
+      console.log(JSON.stringify({ WeatherData: this.data }));
     });
   }
 
@@ -59,18 +64,21 @@ module.exports = class WeatherData {
     if (line.getYear() > this.year.getYear()) {
       
       // push the completed year to the data structure
-      this.years.push(this.year.getFormattedObject());
+      this.data.push(this.year.getFormattedObject(this.months));
 
       // update data with year and corresponding months
       // then reset the month and year data stores
-      this.data.push(this.years);
-      this.data.push(this.months);
+      //this.data.push(this.years);
+      //this.data.push(this.months);
       this.years = [];
       this.months = [];
 
       // start a new year
       this.year = new Year(line.getYear(), line.getMonth(), line.getDay());
+      //start a new month
+      this.month = new Month(line.getYear(), line.getMonth(), line.getDay());
     }
+      
     // is this a new month?
     if (line.getMonth() > this.month.getMonth()) {
       // push the completed month to the data structure
