@@ -6,15 +6,10 @@ module.exports = class WeatherData {
   constructor() {
     // data representing the JSON report
     this.months = [];
-    this.years = [];
     this.data = []
 
     this.year = new Year(0, 0, 0);
     this.month = new Month(0, 0, 0);
-    // year to compare to find if a new year
-    this.yearMarker = 0;
-    // month to compare to find if a new month
-    this.monthMarker = 0;
     this.lineNo = 0;
     this.previousLine = new Line(0, 0, 0);
   }
@@ -29,7 +24,6 @@ module.exports = class WeatherData {
 
       // do not process header
       if (this.lineNo === 1) return
-
 
       // put line in a line object and process by line
       const splitLine = csvLine.split(',');
@@ -47,8 +41,7 @@ module.exports = class WeatherData {
 
       // push any remaining year and month data
       this.data.push(this.year.getFormattedObject(this.months));
-      //this.data.push(this.months);
-
+      
       console.log(JSON.stringify({ WeatherData: this.data }));
     });
   }
@@ -65,12 +58,6 @@ module.exports = class WeatherData {
       
       // push the completed year to the data structure
       this.data.push(this.year.getFormattedObject(this.months));
-
-      // update data with year and corresponding months
-      // then reset the month and year data stores
-      //this.data.push(this.years);
-      //this.data.push(this.months);
-      this.years = [];
       this.months = [];
 
       // start a new year
