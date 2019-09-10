@@ -2,4 +2,9 @@ const WeatherData = require('./weatherdata.js');
 
 data = new WeatherData();
 
-data.loadFile('test2.csv');
+if(process.argv.length < 3) {
+  console.log("incorrect arguments");
+  process.exit();
+}
+
+data.loadFile(process.argv[2]);

@@ -1,20 +1,14 @@
 const WeatherData = require('./weatherData.js');
 
-const data = new WeatherData('test2.csv');
+describe('Weather methods', () => {
+  test('test', () => {
+    const data = new WeatherData();
+    data.loadFile('./testing/testall.csv');
+    //console.log(data);
 
-beforeEach(() => {
-});
-
-afterEach(() => {
-});
-
-describe('Month methods', () => {
-  test('no of Months', () => {
-    expect(data.getMonths().count()).toBe(1);
+    expect(1 + 1).toBe(2);
   });
-  test('no of Years', () => {
-    expect(data.getYears().count()).toBe(1);
-  });
+
 });
 
 
