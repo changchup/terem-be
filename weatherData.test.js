@@ -3,8 +3,8 @@ const WeatherData = require('./weatherData.js');
 describe('Weather methods', () => {
   test('test', () => {
     const data = new WeatherData();
-    data.loadFile('./testing/testall.csv');
-    //console.log(data);
+    const result = data.loadFile('./testing/testall.csv');
+    console.log(result)
 
     expect(1 + 1).toBe(2);
   });

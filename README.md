@@ -19,7 +19,9 @@ lines in date order, no data structure errors
 
 It was not clear to me how to format multiple elements => When there were multiple elements such as month I put them inside an array.
 
-### improvements
+I did not make tests
+
+### Improvements
 
 use enums for fixed values  
 make checks for above assumptions  
