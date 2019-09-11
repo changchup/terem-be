@@ -14,11 +14,13 @@ module.exports = class WeatherData {
     this.previousLine = new Line(0, 0, 0);
   }
 
-  loadFile(file) {
+  // turn readlines async so can test result
+  async loadFile(file) {
     const lineReader = require('readline').createInterface({
       input: require('fs').createReadStream(file)
     });
 
+    const endOfProcessing = new Promise((resolve, reject)=> {
     lineReader.on('line', (csvLine) => {
       this.lineNo++;
 
@@ -27,7 +29,7 @@ module.exports = class WeatherData {
 
       // put line in a line object and process by line
       const splitLine = csvLine.split(',');
-
+      
       // initialize year and month
       if (this.lineNo === 2) {
         this.processFirstLine(new Line(splitLine[2], splitLine[3], splitLine[4], splitLine[5]));
@@ -38,12 +40,13 @@ module.exports = class WeatherData {
 
     // end of processing file
     lineReader.on('close', () => {
-
       // push any remaining year and month data
       this.data.push(this.year.getFormattedObject(this.months));
-      
-      console.log(JSON.stringify({ WeatherData: this.data }));
-    });
+      resolve();
+    })
+  });
+  await endOfProcessing;
+  return this.data;
   }
 
   /**
@@ -56,6 +59,9 @@ module.exports = class WeatherData {
     // is this a new year?
     if (line.getYear() > this.year.getYear()) {
       
+      // push the final month
+      this.months.push(this.month.getFormattedObject());
+
       // push the completed year to the data structure
       this.data.push(this.year.getFormattedObject(this.months));
       this.months = [];

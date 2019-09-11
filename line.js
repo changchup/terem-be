@@ -19,6 +19,7 @@ module.exports = class Line {
   }
   
   getRainfall(){
+    if(this.rainfall === '' || !this.rainfall) return '0';
     return this.rainfall;
   }
   

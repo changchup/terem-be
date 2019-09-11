@@ -14,7 +14,7 @@ module.exports = class BaseTime {
 
   addRain(rainfall) {
     this.noOfDays++;
-    if (rainfall === '0') {
+    if (!rainfall || rainfall === '0') {
       this.daysWithoutRain++;
     } else {
       this.daysWithRain++;
@@ -29,13 +29,15 @@ module.exports = class BaseTime {
   }
 
   setLastRecordedDate(line) {
-    if (line.rainfall !== '0') {
+    // if there was no rain or no rain recorded, do not set it
+    if (line.getRainfall() !== '0') {
       this.lastRecordedDate = new Date(line.year, new Number(line.month) - 1, line.day);
     }
   }
 
   setFirstRecordedDate(line) {
-    if (line.rainfall !== '0' && this.firstRecordedDate === '') {
+    // if there was no rain or no rain recorded and no first recorded date
+    if (line.getRainfall() !== '0' && this.firstRecordedDate === '') {
       this.firstRecordedDate = new Date(line.year, new Number(line.month) - 1, line.day);
     }
 

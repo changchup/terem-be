@@ -7,4 +7,6 @@ if(process.argv.length < 3) {
   process.exit();
 }
 
-data.loadFile(process.argv[2]);
+data.loadFile(process.argv[2]).then((result)=>{
+  console.log(JSON.stringify({ WeatherData: result }));
+});
